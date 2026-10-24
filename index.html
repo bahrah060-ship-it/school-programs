@@ -92,7 +92,7 @@ header{
 .leaf{position:absolute;width:115px;height:185px;bottom:0;border-radius:100% 0 100% 0;background:linear-gradient(135deg,#0b806d,#67b99b);transform:rotate(-30deg);opacity:.9}
 .leaf:after{content:"";position:absolute;width:4px;height:150px;background:#1c7869;left:50%;top:20px;transform:rotate(30deg)}
 .leaf.l1{left:0}.leaf.l2{right:0;transform:rotate(40deg) scale(.9)}
-.cards{position:relative;margin:-8px 2.5% 0;z-index:5;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cards{position:relative;margin:-8px auto 0;z-index:5;display:grid;grid-template-columns:repeat(2,minmax(320px,360px));justify-content:center;gap:18px;width:100%;padding:0 20px}
 .card{min-height:245px;border:1px solid #e0eded;border-radius:22px;padding:24px 20px;text-align:center;background:linear-gradient(145deg,#f4fbfa,#eef8f9);box-shadow:0 10px 25px rgba(20,80,90,.08);cursor:pointer;transition:.2s}
 .card:nth-child(2){background:linear-gradient(145deg,#f1f8fd,#edf7fb)}
 .card:nth-child(3){background:linear-gradient(145deg,#eefaf5,#eaf8f2)}
@@ -151,7 +151,7 @@ th{background:#edf7f6;color:#075c61}
  .hero-copy{text-align:center;order:1}.hero p{margin:auto;font-size:14px}.underline{margin:18px auto}
  .hero h1{font-size:clamp(24px,7.1vw,40px);letter-spacing:-1.1px;line-height:1.12;width:100%;white-space:nowrap}.hero h1 span{margin-top:6px;letter-spacing:-1.1px;white-space:nowrap}.pill{font-size:13px}
  .hero-art{order:2;min-height:300px}.laptop{width:70%}
- .cards{grid-template-columns:1fr;margin:18px 5% 0;gap:12px}.card{min-height:190px;padding:18px}
+ .cards{grid-template-columns:1fr;width:auto;margin:18px 5% 0;gap:12px;padding:0}.card{min-height:190px;padding:18px}
  .card h3{font-size:21px}.icon{width:60px;height:60px;font-size:30px}.arrow{width:42px;height:42px}
  .stats{grid-template-columns:1fr;margin:20px 5% 0;padding:15px}.stat-box{min-height:230px}
  .donut{width:125px;height:125px}.donut:after{inset:28px;font-size:15px}
@@ -236,15 +236,15 @@ th{background:#edf7f6;color:#075c61}
 
 <section class="cards">
 
-  <div class="card" id="reportsCard">
-    <div class="icon">▥</div>
-    <h3>التقارير والمتابعة</h3>
-    <p>متابعة التنفيذ وإنجاز البرامج وإعداد التقارير</p>
-    <div class="arrow">‹</div>
-  </div>
-
   <div class="card" id="programsCard">
-    <div class="icon">□</div>
+    <div class="icon" aria-label="البرامج والأنشطة">
+      <svg viewBox="0 0 64 64" width="38" height="38" aria-hidden="true">
+        <rect x="15" y="10" width="34" height="44" rx="5" fill="none" stroke="currentColor" stroke-width="4"/>
+        <path d="M24 10v-3h16v3" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <path d="M23 24h18M23 33h12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <path d="M35 43l4 4 9-10" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <h3>البرامج والأنشطة</h3>
     <p>إدارة وتصنيف جميع البرامج والأنشطة المدرسية</p>
     <div class="arrow">‹</div>
@@ -432,7 +432,6 @@ document.querySelectorAll("[data-close]").forEach(btn=>btn.addEventListener("cli
 document.querySelectorAll(".modal-bg").forEach(bg=>bg.addEventListener("click",e=>{if(e.target===bg)closeModal(bg.id)}));
 $("programsCard").onclick=()=>{resetProgramForm();openModal("programModal")};
 $("adminCard").onclick=()=>openModal("adminModal");
-$("reportsCard").onclick=()=>openModal("adminModal");
 
 function resetProgramForm(){
   $("programForm").reset(); selectedEvidenceFiles=[]; renderFiles(); $("formStatus").className="status"; $("formStatus").textContent="";
@@ -520,20 +519,12 @@ $("programForm").addEventListener("submit",async e=>{
 });
 
 $("loginBtn").onclick=async()=>{
- const status=$("loginStatus"),email=$("adminEmail").value.trim().toLowerCase(),password=$("adminPassword").value;
- if(email!==ADMIN_EMAIL.toLowerCase()){status.className="status err";status.textContent="البريد غير مصرح له.";return;}
+ const status=$("loginStatus"),email=$("adminEmail").value.trim(),password=$("adminPassword").value;
+ if(email.toLowerCase()!==ADMIN_EMAIL.toLowerCase()){status.className="status err";status.textContent="البريد غير مصرح له.";return;}
  if(!supabaseClient){status.className="status err";status.textContent="لم يتم ربط Supabase بعد.";return;}
- if(!password){status.className="status err";status.textContent="أدخلي كلمة المرور.";return;}
- status.className="status";status.textContent="جارٍ التحقق من بيانات الدخول...";
- const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
- if(error){
-   status.className="status err";
-   status.textContent="تعذر تسجيل الدخول: "+(error.message||"خطأ غير معروف");
-   console.error("Supabase login error:", error);
-   return;
- }
- status.className="status ok";status.textContent="تم تسجيل الدخول، جارٍ تحميل لوحة المديرة...";
- await loadDashboard();
+ const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+ if(error){status.className="status err";status.textContent="بيانات الدخول غير صحيحة.";return;}
+ status.className="status";status.textContent="";await loadDashboard();
 };
 
 $("refreshBtn").onclick=loadDashboard;
