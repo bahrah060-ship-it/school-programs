@@ -302,7 +302,7 @@ th{background:#edf7f6;color:#075c61}
 <div><label>تاريخ التنفيذ *</label><input name="execution_date" type="date" required></div>
 <div><label>مدة التنفيذ</label><input name="duration" placeholder="مثال: يومان / أسبوع / شهر"></div>
 <div><label>مكان التنفيذ</label><input name="location"></div>
-<div><label>الفصل الدراسي</label><select name="semester"><option value="">اختيار الفصل</option><option>الفصل الدراسي الأول</option><option>الفصل الدراسي الثاني</option><option>الفصل الدراسي الثالث</option></select></div>
+<div><label>الفصل الدراسي</label><select name="semester"><option value="">اختيار الفصل</option><option>الفصل الدراسي الأول</option><option>الفصل الدراسي الثاني</option></select></div>
 <div><label>العام الدراسي</label><input name="academic_year" placeholder="1447-1448هـ"></div>
 <div><label>حالة البرنامج</label><select name="status"><option>مخطط له</option><option>منفذ</option><option>مكتمل</option><option>مؤجل</option></select></div>
 </div>
@@ -310,7 +310,7 @@ th{background:#edf7f6;color:#075c61}
 <div class="form-section-title">2. بيانات المنفذين</div>
 <div class="form-grid">
 <div><label>اسم منفذة البرنامج *</label><input name="implementer" required></div>
-<div><label>المسمى أو الصفة</label><input name="role" placeholder="معلمة / موجهة / منسقة... "></div>
+<div><label>المسمى أو الصفة</label><select name="role"><option value="">اختيار المسمى أو الصفة</option><option>معلمة</option><option>موجهة طلابية</option><option>منسقة</option><option>وكيلة</option><option>مديرة</option><option>إدارية</option><option>أخرى</option></select></div>
 <div class="full"><label>الشراكات إن وجدت</label><input name="partnerships"></div>
 </div>
 
@@ -334,7 +334,7 @@ th{background:#edf7f6;color:#075c61}
 <div class="evidence-tools">
 <button type="button" class="evidence-tool" id="pdfEvidenceBtn"><b>PDF</b><span>ملفات PDF</span></button>
 <button type="button" class="evidence-tool" id="linkEvidenceBtn"><b>↗</b><span>روابط خارجية</span></button>
-<button type="button" class="evidence-tool" id="qrEvidenceBtn"><b>QR</b><span>QR Code</span></button>
+<button type="button" class="evidence-tool" id="imageEvidenceBtn"><b>🖼</b><span>إدراج الباركود فقط</span></button>
 </div>
 <input id="evidenceFiles" type="file" accept="application/pdf" multiple hidden>
 <div id="evidenceFilesList" class="evidence-list"></div>
@@ -342,14 +342,12 @@ th{background:#edf7f6;color:#075c61}
 <label>الرابط الخارجي</label>
 <input id="external_link" name="external_link" type="url" placeholder="https://...">
 </div>
-<div id="qrEvidencePanel" class="evidence-input-panel" hidden>
-<label>محتوى QR Code للشاهد</label>
-<input id="evidence_qr" name="evidence_qr" placeholder="أدخلي رابطًا أو نصًا يظهر عند مسح الرمز">
-</div>
+<input id="evidenceImages" type="file" accept="image/*" multiple hidden>
+<div id="evidenceImagesList" class="evidence-list"></div>
 
 <div class="form-section-title">6. قياس الأثر</div>
 <div class="form-grid">
-<div><label>أداة قياس الأثر</label><input name="impact_tool" placeholder="استبانة / ملاحظة / اختبار قبلي وبعدي... "></div>
+<div><label>أداة قياس الأثر</label><select name="impact_tool"><option value="">اختيار أداة القياس</option><option>استبانة رضا</option><option>استبانة قبلية وبعدية</option><option>اختبار قبلي وبعدي</option><option>ملاحظة</option><option>مقابلة</option><option>تحليل نتائج</option><option>سجل رصد</option><option>أخرى</option></select></div>
 <div><label>أبرز النتائج</label><input name="results"></div>
 <div class="full"><label>التغير أو الأثر الملحوظ</label><textarea name="impact"></textarea></div>
 <div class="full"><label>التوصيات</label><textarea name="recommendations"></textarea></div>
@@ -386,7 +384,7 @@ th{background:#edf7f6;color:#075c61}
 <input id="toDate" type="date" title="إلى تاريخ">
 <select id="stageFilter"><option value="">كل المراحل</option><option>الطالبات</option><option>المعلمات</option><option>الكادر الإداري</option><option>أولياء الأمور</option><option>المجتمع المحلي</option></select>
 <select id="statusFilter"><option value="">كل الحالات</option><option>مخطط له</option><option>منفذ</option><option>مكتمل</option><option>مؤجل</option></select>
-<select id="semesterFilter"><option value="">كل الفصول</option><option>الفصل الدراسي الأول</option><option>الفصل الدراسي الثاني</option><option>الفصل الدراسي الثالث</option></select>
+<select id="semesterFilter"><option value="">كل الفصول</option><option>الفصل الدراسي الأول</option><option>الفصل الدراسي الثاني</option></select>
 </div>
 <div class="actions"><button class="primary" id="refreshBtn">تحديث البيانات</button><button class="secondary" id="logoutBtn">تسجيل الخروج</button></div>
 <div class="table-scroll"><table><thead><tr><th>الرقم المرجعي</th><th>البرنامج</th><th>التاريخ</th><th>المنفذة</th><th>الحالة</th><th>الاعتماد</th><th>إجراءات</th></tr></thead><tbody id="programRows"></tbody></table></div>
@@ -418,6 +416,7 @@ const STORAGE_BUCKET = "program-evidence";
 let supabaseClient = null;
 let allPrograms = [];
 let selectedEvidenceFiles = [];
+let selectedEvidenceImages = [];
 
 if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
   supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -434,16 +433,20 @@ $("programsCard").onclick=()=>{resetProgramForm();openModal("programModal")};
 $("adminCard").onclick=()=>openModal("adminModal");
 
 function resetProgramForm(){
-  $("programForm").reset(); selectedEvidenceFiles=[]; renderFiles(); $("formStatus").className="status"; $("formStatus").textContent="";
-  $("linkEvidencePanel").hidden=true; $("qrEvidencePanel").hidden=true;
+  $("programForm").reset(); selectedEvidenceFiles=[]; selectedEvidenceImages=[]; renderFiles(); renderImages(); $("formStatus").className="status"; $("formStatus").textContent="";
+  $("linkEvidencePanel").hidden=true;
 }
 $("pdfEvidenceBtn").onclick=()=>$("evidenceFiles").click();
 $("linkEvidenceBtn").onclick=()=>{ $("linkEvidencePanel").hidden=!$("linkEvidencePanel").hidden; if(!$("linkEvidencePanel").hidden) $("external_link").focus(); };
-$("qrEvidenceBtn").onclick=()=>{ $("qrEvidencePanel").hidden=!$("qrEvidencePanel").hidden; if(!$("qrEvidencePanel").hidden) $("evidence_qr").focus(); };
+$("imageEvidenceBtn").onclick=()=>$("evidenceImages").click();
 
 $("evidenceFiles").onchange=e=>{ selectedEvidenceFiles=[...e.target.files]; renderFiles(); };
+$("evidenceImages").onchange=e=>{ selectedEvidenceImages=[...e.target.files]; renderImages(); };
 function renderFiles(){
   $("evidenceFilesList").innerHTML=selectedEvidenceFiles.map(f=>`<div>📄 ${escapeHtml(f.name)} <small>(${Math.round(f.size/1024)} KB)</small></div>`).join("");
+}
+function renderImages(){
+  $("evidenceImagesList").innerHTML=selectedEvidenceImages.map(f=>`<div>🖼️ ${escapeHtml(f.name)} <small>(${Math.round(f.size/1024)} KB)</small></div>`).join("");
 }
 
 async function loadPublicStats(){
@@ -491,7 +494,7 @@ function renderPublicCharts(stats){
 function formObject(){
  const fd=new FormData($("programForm"));
  return {
-  name:fd.get("name"), type:fd.get("type"), description:fd.get("description"), execution_date:fd.get("execution_date"), duration:fd.get("duration"), location:fd.get("location"), semester:fd.get("semester"), academic_year:fd.get("academic_year"), status:fd.get("status"), implementer:fd.get("implementer"), role:fd.get("role"), partnerships:fd.get("partnerships"), targets:fd.getAll("targets"), beneficiaries:Number(fd.get("beneficiaries")||0), general_goal:fd.get("general_goal"), detailed_goals:fd.get("detailed_goals"), evidence_notes:"", external_link:fd.get("external_link"), evidence_qr:fd.get("evidence_qr"), impact_tool:fd.get("impact_tool"), results:fd.get("results"), impact:fd.get("impact"), recommendations:fd.get("recommendations")
+  name:fd.get("name"), type:fd.get("type"), description:fd.get("description"), execution_date:fd.get("execution_date"), duration:fd.get("duration"), location:fd.get("location"), semester:fd.get("semester"), academic_year:fd.get("academic_year"), status:fd.get("status"), implementer:fd.get("implementer"), role:fd.get("role"), partnerships:fd.get("partnerships"), targets:fd.getAll("targets"), beneficiaries:Number(fd.get("beneficiaries")||0), general_goal:fd.get("general_goal"), detailed_goals:fd.get("detailed_goals"), evidence_notes:"", external_link:fd.get("external_link"), impact_tool:fd.get("impact_tool"), results:fd.get("results"), impact:fd.get("impact"), recommendations:fd.get("recommendations")
  };
 }
 
@@ -501,21 +504,30 @@ $("programForm").addEventListener("submit",async e=>{
  const payload=formObject();
  status.className="status"; status.textContent="جارٍ حفظ البرنامج ورفع الشواهد...";
  const {data,error}=await supabaseClient.from("programs").insert({
-   name:payload.name,type:payload.type,description:payload.description,execution_date:payload.execution_date,duration:payload.duration,location:payload.location,semester:payload.semester,academic_year:payload.academic_year,status:payload.status,implementer:payload.implementer,role:payload.role,partnerships:payload.partnerships,targets:payload.targets,beneficiaries:payload.beneficiaries,general_goal:payload.general_goal,detailed_goals:payload.detailed_goals,evidence_notes:payload.evidence_notes,external_link:payload.external_link,evidence_qr:payload.evidence_qr,impact_tool:payload.impact_tool,results:payload.results,impact:payload.impact,recommendations:payload.recommendations,approval_status:"قيد المراجعة"
+   name:payload.name,type:payload.type,description:payload.description,execution_date:payload.execution_date,duration:payload.duration,location:payload.location,semester:payload.semester,academic_year:payload.academic_year,status:payload.status,implementer:payload.implementer,role:payload.role,partnerships:payload.partnerships,targets:payload.targets,beneficiaries:payload.beneficiaries,general_goal:payload.general_goal,detailed_goals:payload.detailed_goals,evidence_notes:payload.evidence_notes,external_link:payload.external_link,impact_tool:payload.impact_tool,results:payload.results,impact:payload.impact,recommendations:payload.recommendations,approval_status:"قيد المراجعة"
  }).select().single();
  if(error){status.className="status err";status.textContent="تعذر الحفظ: "+error.message;return;}
  if(selectedEvidenceFiles.length && data?.id){
    for(const file of selectedEvidenceFiles){
      const safe=file.name.replace(/[^\w\u0600-\u06FF.-]+/g,"_");
      const path=`${data.id}/${Date.now()}_${safe}`;
-     const upload=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{upsert:false,contentType:"application/pdf"});
+     const upload=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{upsert:false,contentType:file.type||"application/pdf"});
      if(upload.error){console.warn("Upload error",upload.error);continue;}
      await supabaseClient.from("program_evidence").insert({program_id:data.id,file_name:file.name,storage_path:path,evidence_type:"PDF"});
    }
  }
+ if(selectedEvidenceImages.length && data?.id){
+   for(const file of selectedEvidenceImages){
+     const safe=file.name.replace(/[^\w\u0600-\u06FF.-]+/g,"_");
+     const path=`${data.id}/images_${Date.now()}_${safe}`;
+     const upload=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{upsert:false,contentType:file.type||"image/*"});
+     if(upload.error){console.warn("Image upload error",upload.error);continue;}
+     await supabaseClient.from("program_evidence").insert({program_id:data.id,file_name:file.name,storage_path:path,evidence_type:"IMAGE"});
+   }
+ }
  status.className="status ok"; status.textContent=`تم حفظ البرنامج وإرساله للمديرة. الرقم المرجعي: ${data.reference_no}`;
  await loadPublicStats();
- e.target.reset(); selectedEvidenceFiles=[]; renderFiles();
+ e.target.reset(); selectedEvidenceFiles=[]; selectedEvidenceImages=[]; renderFiles(); renderImages();
 });
 
 $("loginBtn").onclick=async()=>{
@@ -561,12 +573,12 @@ window.approveProgram=async id=>{if(!supabaseClient)return;if(!confirm("اعتم
 window.deleteProgram=async id=>{if(!supabaseClient)return;if(!confirm("سيتم حذف البرنامج من السحابة نهائيًا. هل أنتِ متأكدة؟"))return;const {data:files}=await supabaseClient.from("program_evidence").select("storage_path").eq("program_id",id);if(files?.length)await supabaseClient.storage.from(STORAGE_BUCKET).remove(files.map(x=>x.storage_path));await supabaseClient.from("program_evidence").delete().eq("program_id",id);const {error}=await supabaseClient.from("programs").delete().eq("id",id);if(error)alert(error.message);else await loadDashboard();};
 
 window.viewReport=async id=>{const p=allPrograms.find(x=>x.id===id);if(!p)return;$("reportContent").innerHTML=buildReport(p);openModal("reportModal");generateQR(p);};
-window.viewEvidence=async id=>{if(!supabaseClient)return;const {data,error}=await supabaseClient.from("program_evidence").select("*").eq("program_id",id).order("created_at");const p=allPrograms.find(x=>x.id===id);let html=`<p><b>${escapeHtml(p?.name||"")}</b></p>`;if(error){html+=`<div class="status err">${escapeHtml(error.message)}</div>`;}else if(!data?.length){html+="<p>لا توجد ملفات PDF مرفوعة.</p>";}else{html+=data.map(f=>`<div class="evidence-row"><span>📄 ${escapeHtml(f.file_name)}</span><button class="row-btn" onclick="openEvidence('${f.storage_path}')">فتح</button></div>`).join("");}if(p?.external_link)html+=`<div class="evidence-row"><span>رابط خارجي</span><a href="${escapeHtml(p.external_link)}" target="_blank" rel="noopener">فتح الرابط</a></div>`;if(p?.evidence_qr){html+=`<div id="evidenceQR" class="qr-box"></div>`;}$("evidenceContent").innerHTML=html;openModal("evidenceModal");if(p?.evidence_qr)new QRCode($("evidenceQR"),{text:p.evidence_qr,width:150,height:150});};
+window.viewEvidence=async id=>{if(!supabaseClient)return;const {data,error}=await supabaseClient.from("program_evidence").select("*").eq("program_id",id).order("created_at");const p=allPrograms.find(x=>x.id===id);let html=`<p><b>${escapeHtml(p?.name||"")}</b></p>`;if(error){html+=`<div class="status err">${escapeHtml(error.message)}</div>`;}else if(!data?.length){html+="<p>لا توجد شواهد مرفوعة.</p>";}else{html+=data.map(f=>`<div class="evidence-row"><span>${f.evidence_type==="IMAGE"?"🖼️":"📄"} ${escapeHtml(f.file_name)}</span><button class="row-btn" onclick="openEvidence('${f.storage_path}')">فتح</button></div>`).join("");}if(p?.external_link)html+=`<div class="evidence-row"><span>رابط خارجي</span><a href="${escapeHtml(p.external_link)}" target="_blank" rel="noopener">فتح الرابط</a></div>`;$("evidenceContent").innerHTML=html;openModal("evidenceModal");};
 window.openEvidence=async path=>{const {data,error}=await supabaseClient.storage.from(STORAGE_BUCKET).createSignedUrl(path,3600);if(error)alert(error.message);else window.open(data.signedUrl,"_blank");};
 
 function buildReport(p){
  const targets=(p.targets||[]).join("، ")||"—";
- return `<div class="official-report"><div class="report-head"><div><h1>تقرير البرنامج / النشاط</h1><p>منصة إدارة وتوثيق البرامج المدرسية</p></div><div class="reference">${escapeHtml(p.reference_no||"")}</div></div><div class="report-grid"><div><b>اسم البرنامج</b><span>${escapeHtml(p.name)}</span></div><div><b>نوعه</b><span>${escapeHtml(p.type||"—")}</span></div><div><b>تاريخ التنفيذ</b><span>${escapeHtml(p.execution_date||"—")}</span></div><div><b>المدة</b><span>${escapeHtml(p.duration||"—")}</span></div><div><b>المكان</b><span>${escapeHtml(p.location||"—")}</span></div><div><b>الفصل الدراسي</b><span>${escapeHtml(p.semester||"—")}</span></div><div><b>العام الدراسي</b><span>${escapeHtml(p.academic_year||"—")}</span></div><div><b>الحالة</b><span>${escapeHtml(p.status||"—")}</span></div><div><b>المنفذة</b><span>${escapeHtml(p.implementer||"—")}</span></div><div><b>الصفة</b><span>${escapeHtml(p.role||"—")}</span></div><div><b>عدد المستفيدات المستهدف</b><span>${Number(p.beneficiaries||0)}</span></div><div><b>الفئة المستهدفة</b><span>${escapeHtml(targets)}</span></div></div><section><h3>وصف البرنامج</h3><p>${nl2br(p.description)}</p></section><section><h3>الشراكات</h3><p>${nl2br(p.partnerships)}</p></section><section><h3>أهداف البرنامج</h3><h4>الهدف العام</h4><p>${nl2br(p.general_goal)}</p><h4>الأهداف التفصيلية</h4><p>${nl2br(p.detailed_goals)}</p></section><section><h3>التوثيق والشواهد</h3><p>${nl2br(p.evidence_notes)}</p><p>${p.external_link?`الرابط الخارجي: <a href="${escapeHtml(p.external_link)}">${escapeHtml(p.external_link)}</a>`:""}</p><div id="reportQR" class="qr-box"></div></section><section><h3>قياس الأثر</h3><div class="impact-box"><p><b>أداة قياس الأثر:</b> ${escapeHtml(p.impact_tool||"—")}</p><p><b>أبرز النتائج:</b> ${escapeHtml(p.results||"—")}</p><p><b>التغير أو الأثر الملحوظ:</b> ${nl2br(p.impact)}</p><p><b>التوصيات:</b> ${nl2br(p.recommendations)}</p></div></section><div class="report-footer">الاعتماد: ${escapeHtml(p.approval_status||"قيد المراجعة")} &nbsp; | &nbsp; الرقم المرجعي: ${escapeHtml(p.reference_no||"")}</div></div>`;
+ return `<div class="official-report"><div class="report-head"><div><h1>تقرير البرنامج / النشاط</h1><p>منصة إدارة وتوثيق البرامج المدرسية</p></div><div class="reference">${escapeHtml(p.reference_no||"")}</div></div><div class="report-grid"><div><b>اسم البرنامج</b><span>${escapeHtml(p.name)}</span></div><div><b>نوعه</b><span>${escapeHtml(p.type||"—")}</span></div><div><b>تاريخ التنفيذ</b><span>${escapeHtml(p.execution_date||"—")}</span></div><div><b>المدة</b><span>${escapeHtml(p.duration||"—")}</span></div><div><b>المكان</b><span>${escapeHtml(p.location||"—")}</span></div><div><b>الفصل الدراسي</b><span>${escapeHtml(p.semester||"—")}</span></div><div><b>العام الدراسي</b><span>${escapeHtml(p.academic_year||"—")}</span></div><div><b>الحالة</b><span>${escapeHtml(p.status||"—")}</span></div><div><b>المنفذة</b><span>${escapeHtml(p.implementer||"—")}</span></div><div><b>الصفة</b><span>${escapeHtml(p.role||"—")}</span></div><div><b>عدد المستفيدات المستهدف</b><span>${Number(p.beneficiaries||0)}</span></div><div><b>الفئة المستهدفة</b><span>${escapeHtml(targets)}</span></div></div><section><h3>وصف البرنامج</h3><p>${nl2br(p.description)}</p></section><section><h3>الشراكات</h3><p>${nl2br(p.partnerships)}</p></section><section><h3>أهداف البرنامج</h3><h4>الهدف العام</h4><p>${nl2br(p.general_goal)}</p><h4>الأهداف التفصيلية</h4><p>${nl2br(p.detailed_goals)}</p></section><section><h3>التوثيق والشواهد</h3><p>${nl2br(p.evidence_notes)}</p><p>${p.external_link?`الرابط الخارجي: <a href="${escapeHtml(p.external_link)}">${escapeHtml(p.external_link)}</a>`:""}</p></section><section><h3>قياس الأثر</h3><div class="impact-box"><p><b>أداة قياس الأثر:</b> ${escapeHtml(p.impact_tool||"—")}</p><p><b>أبرز النتائج:</b> ${escapeHtml(p.results||"—")}</p><p><b>التغير أو الأثر الملحوظ:</b> ${nl2br(p.impact)}</p><p><b>التوصيات:</b> ${nl2br(p.recommendations)}</p></div></section><div class="report-footer">الاعتماد: ${escapeHtml(p.approval_status||"قيد المراجعة")} &nbsp; | &nbsp; الرقم المرجعي: ${escapeHtml(p.reference_no||"")}</div></div>`;
 }
 function generateQR(p){setTimeout(()=>{const el=$("reportQR");if(el){el.innerHTML="";new QRCode(el,{text:`${location.origin}${location.pathname}?report=${encodeURIComponent(p.id)}`,width:140,height:140});}},50);}
 $("printReportBtn").onclick=()=>window.print();
